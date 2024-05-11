@@ -1,0 +1,62 @@
+We can add our own config as well in config file.
+
+Lets take an example:
+
+We have a PizzaConfig Class
+
+	package com.vtapps.quickstart.config;
+
+	import lombok.AllArgsConstructor;
+	import lombok.Data;
+	import lombok.NoArgsConstructor;
+	import org.springframework.boot.context.properties.ConfigurationProperties;
+	import org.springframework.context.annotation.Configuration;
+
+	@Configuration //Specify Spring to Look for the Class Config
+	@NoArgsConstructor //Lombak Annotation for Creating No Argument Constructor
+	@AllArgsConstructor //Lombak Annotation for Creating All Argument Constructor
+	@Data //Lombak Annotation for Creating Getter,Setter,HashCode,Equals and String Method
+	@ConfigurationProperties(prefix = "pizza") //Specify that this class will have properties starting with prefix="pizza"
+	public class PizzaConfig {
+	    private String sauce;
+	    private String topping;
+	    private String crust;
+	}
+
+
+applications.properties file:
+
+	pizza.crust=thick
+	pizza.sauce=tomato
+	pizza.topping=mozzarella	
+
+
+Startup class:
+
+	@SpringBootApplication
+	@Log4j2
+	public class QuickstartApplication implements CommandLineRunner {
+		private PizzaConfig pizzaConfig;
+
+		public QuickstartApplication(PizzaConfig pizzaConfig){ //If @Configuration was not added to POJO class, then we get Bean not found error
+			this.pizzaConfig=pizzaConfig;
+		}
+
+		public static void main(String[] args) {
+			SpringApplication.run(QuickstartApplication.class, args);
+		}
+
+		@Override
+		public void run(String... args) throws Exception {
+
+			log.info(String.format("I want %s crust pizza, with %s and %s sauce",
+					pizzaConfig.getCrust(),
+					pizzaConfig.getTopping(),
+					pizzaConfig.getSauce())
+			);
+		}
+	}
+
+
+
+

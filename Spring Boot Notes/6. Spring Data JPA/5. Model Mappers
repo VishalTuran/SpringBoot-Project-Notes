@@ -1,0 +1,124 @@
+Now we have Entity and DTO Class, but we need to also a have to mapper to make the conversion b/w them.
+
+
+We have a Library which takes of this usecase:
+
+Add this to POM:
+
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+
+Mapper Interface:
+
+
+	package com.vtapps.quickstart.mappers;
+
+	public interface Mapper<A,B> {
+	    B mapTo(A a);
+	    A mapFrom(B b);
+	}
+
+Two methods to convert from A to B and B to A
+
+
+AuthorMapper Implementation:
+
+	package com.vtapps.quickstart.mappers.impl;
+
+	import com.vtapps.quickstart.Domain.dto.AuthorDto;
+	import com.vtapps.quickstart.Domain.entities.AuthorEntity;
+	import com.vtapps.quickstart.mappers.Mapper;
+	import org.modelmapper.ModelMapper;
+	import org.springframework.stereotype.Component;
+
+	@Component
+	public class AuthorMapperImpl implements Mapper<AuthorEntity, AuthorDto> {
+	    private ModelMapper modelMapper;
+
+	    public AuthorMapperImpl(ModelMapper modelMapper){
+	        this.modelMapper=modelMapper;
+	    }
+	    @Override
+	    public AuthorDto mapTo(AuthorEntity authorEntity) {
+	        return modelMapper.map(authorEntity,AuthorDto.class);
+	    }
+
+	    @Override
+	    public AuthorEntity mapFrom(AuthorDto authorDto) {
+	        return modelMapper.map(authorDto,AuthorEntity.class);
+	    }
+	}
+
+Mark this class as Component so that it can be injected by Spring Boot wherever required. 
+
+Next we have ModelMapper object, constructor to take this as argument.(It will be automatically injected by Spring Boot)
+
+Then the Implementation for mapTo and mapFrom method.
+
+Similarly we have BookMapper Implementation:
+
+	package com.vtapps.quickstart.mappers.impl;
+
+	import com.vtapps.quickstart.Domain.dto.BookDto;
+	import com.vtapps.quickstart.Domain.entities.BookEntity;
+	import com.vtapps.quickstart.mappers.Mapper;
+	import org.modelmapper.ModelMapper;
+	import org.springframework.stereotype.Component;
+
+	@Component
+	public class BookMapperImpl implements Mapper<BookEntity, BookDto> {
+	    private ModelMapper modelMapper;
+
+	    public BookMapperImpl(ModelMapper modelMapper) {
+	        this.modelMapper = modelMapper;
+	    }
+
+	    @Override
+	    public BookDto mapTo(BookEntity bookEntity) {
+	        return modelMapper.map(bookEntity,BookDto.class);
+	    }
+
+	    @Override
+	    public BookEntity mapFrom(BookDto bookDto) {
+	        return modelMapper.map(bookDto,BookEntity.class);
+	    }
+	}
+
+ModelMapper is not Added as Bean yet, we will get Error if we run the App.
+
+Let add this as Bean.
+
+	package com.vtapps.quickstart.config;
+
+	import org.modelmapper.ModelMapper;
+	import org.modelmapper.convention.MatchingStrategies;
+	import org.springframework.context.annotation.Bean;
+	import org.springframework.context.annotation.Configuration;
+
+	@Configuration
+	public class MapperConfig {
+	    @Bean
+	    public ModelMapper modelMapper(){
+	        ModelMapper mapper = new ModelMapper();
+	        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+	        return mapper;
+	    }
+	}
+
+Created a Configuration Class and Added a Bean for ModelMapper. 
+
+Note: Matching Strategy that we added here is used to proper handle Object insides Object Properly.
+
+Because we have Author Object inside Book Class.
+
+
+
+
+
+
+
+

@@ -1,0 +1,18 @@
+We can also use Environment Variable to pass some important config for our app.
+
+The General Syntax of Environment Variable is very similar to config file.
+
+Ex:
+
+server.port --> SERVER_PORT
+
+Words are CAPTITALISED and delimitter is replaced with UnderScore
+
+Passing the environment variables:
+
+1. RUN COMMAND: "SERVER_PORT=9291 ./mvnw spring-boot:run"
+
+or
+
+1. RUN COMMAND: "export SERVER_PORT=9291"
+2. RUN COMMAND: "./mvnw spring-boot:run"

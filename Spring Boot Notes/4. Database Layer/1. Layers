@@ -1,0 +1,6 @@
+First we have Database Driver, this helps in interaction with DB
+
+Then we have JDBC(Java Database Connectivity), we can use this interact with DB with help of Query. In Spring World, we have Spring JDBC, using this we can get rid of all complexity and only focus on actual work
+
+Then we have JPA(Java Persistance API) allows interaction with DB using Java Objects. JPA is build on top of JDBC. In Spring World, we have Spring Data JPA, using this we can get rid of all complexity and only focus on actual work
+

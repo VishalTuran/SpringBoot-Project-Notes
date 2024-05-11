@@ -1,0 +1,60 @@
+Connecting to Database::
+
+Add Driver Dependency in pom.xml
+
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.7.3</version>
+		</dependency>
+
+
+Create Postgresql db using Docker
+
+	version: '3.1'
+
+	services:
+	  db:
+	    image: postgres
+	    ports:
+	    - "5432:5432"
+	    restart: always
+	    environment:
+	      POSTGRES_PASSWORD: changemeinprod!
+
+Make it up using: "docker-compose up"
+
+
+Add Config:
+
+	spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
+	spring.datasource.username=postgres
+	spring.datasource.password=changemeinprod!
+	spring.datasource.driver-class-name=org.postgresql.Driver
+
+
+Create DataSource and Make a Call to DB:
+
+	@SpringBootApplication
+	@Log4j2
+	public class QuickstartApplication implements CommandLineRunner {
+		private final DataSource dataSource;
+
+		public QuickstartApplication(DataSource dataSource){
+			this.dataSource=dataSource;
+		}
+
+		public static void main(String[] args) {
+			SpringApplication.run(QuickstartApplication.class, args);
+		}
+
+		@Override
+		public void run(String... args) throws Exception {
+			log.info("Data Source:"+dataSource.toString());
+			JdbcTemplate restTemplate=new JdbcTemplate(dataSource);
+			restTemplate.execute("select 1");
+		}
+	}
+
+
+

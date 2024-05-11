@@ -1,0 +1,13 @@
+Configurations files are used to add Config aboout the project.
+
+We can add all the config in application.properties. This file accepts key-value pair.
+
+Ex:
+
+server.port=8081
+
+This is used to define the port where our application will run
+
+All the key are well documented in Spring Boot Docs.
+
+It's not neccessary to use properties file, we can use yaml, json etc.

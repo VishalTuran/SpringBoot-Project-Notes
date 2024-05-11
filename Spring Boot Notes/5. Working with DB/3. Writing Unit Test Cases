@@ -1,0 +1,35 @@
+Writing Unit Test Cases:
+
+We will use H2 in-memory db to test our code. This will help us in keeping our Prod DB Safe
+
+Under test folder, Add resources directory and create application.properties file:
+
+spring.datasource.url=jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
+spring.datasource.username=sa
+spring.datasource.password=password
+spring.datasource.driver-class-name=org.h2.Driver
+
+Unit Testing Dao:
+
+	@ExtendWith(MockitoExtension.class)
+	public class AuthorDaoImplTests {
+	    @Mock
+	    private JdbcTemplate jdbcTemplate;
+
+	    @InjectMocks
+	    private AuthorDaoImpl underTest;
+
+	    @Test
+	    public void testThatCreateAuthorGeneratesCorrectSql(){
+	        Author author= Author.builder()
+	                .id(1L)
+	                .name("Abiqail Rose")
+	                .age(80)
+	                .build();
+	        underTest.create(author);
+
+	        verify(jdbcTemplate).update(eq("INSERT INTO authors (id,name,age) VALUES (?,?,?)"),
+	                eq(1L),eq("Abiqail Rose"),eq(80));
+	    }
+	}
+

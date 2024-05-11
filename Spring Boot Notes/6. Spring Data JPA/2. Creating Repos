@@ -1,0 +1,30 @@
+We are done with Creating Entities, Now we will create Repository.
+
+Create a Repositories Package, this is where we will add all our Repos.
+
+
+AuthorRepository Interface: 
+
+	package com.vtapps.quickstart.repositories;
+
+	import com.vtapps.quickstart.Domain.Author;
+	import org.springframework.data.repository.CrudRepository;
+	import org.springframework.stereotype.Repository;
+
+	@Repository
+	public interface AuthorRepository extends CrudRepository<Author,Long> { 
+	}
+
+This Interface Extends CrudRepository which helps in providing all basic SQL Query Implementation like FindById, FindAll, Create, Update and Delete.
+
+CrudRepository is taken two parameter, First is The Object(Author in our Case) and Second is the Unique Id Data Type(Long in our Case)
+
+BookRepository Interface:
+
+	package com.vtapps.quickstart.repositories;
+
+	import com.vtapps.quickstart.Domain.Book;
+	import org.springframework.data.repository.CrudRepository;
+
+	public interface BookRepository extends CrudRepository<Book,String> {
+	}

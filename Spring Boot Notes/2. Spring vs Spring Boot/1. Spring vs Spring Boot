@@ -1,0 +1,24 @@
+Both Framework are used to build Rest APIs.
+
+Spring Boot is made on top of Spring.
+
+Spring is highly configurable but due to this it takes effort as well.
+
+Spring has mainly 3 layers:
+
+1. Presentation
+2. Service
+3. Persistance
+
+More about Persistance:
+
+It is where we handle interaction with Database. Here we talk about Entities and DAO/Repositories
+
+More about Services:
+
+Goal of this Layer is to use all the functionality exposed by Persistance layer to meet the requirement for which the app is being built to handle.
+
+
+More about Presentation:
+Goal of this Layer is to use all the data from Services Layer and expose it to User.
+

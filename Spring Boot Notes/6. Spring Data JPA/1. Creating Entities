@@ -1,0 +1,62 @@
+Spring Data JPA helps us in providing some basic sql query.
+
+We don't need to write basic sql query, Spring Data JPA will handle this for us.
+
+We no longer need to add scheme.sql file to define our Scheme, that will also be taken care by Spring Data JPA
+
+To do this:
+
+First we have to modify our POJO Classes:
+
+Book.java:
+
+	package com.vtapps.quickstart.Domain;
+
+	import jakarta.persistence.*;
+	import lombok.*;
+
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	@Entity //This will inform Spring Data JPA to consider this Class as an Entity
+	@Table(name = "authors") //Attaching it to the authors Table
+	public class Author {
+	    @Id //Unique Id 
+	    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "author_id_seq") //Automatic Generation Of Id
+	    private Long id;
+	    private String name;
+	    private Integer age;
+	}
+
+
+Author.java
+
+	package com.vtapps.quickstart.Domain;
+
+	import jakarta.persistence.*;
+	import lombok.AllArgsConstructor;
+	import lombok.Builder;
+	import lombok.Data;
+	import lombok.NoArgsConstructor;
+
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	@Entity //This will inform Spring Data JPA to consider this Class as an Entity
+	@Table(name = "books") //Attaching it to the books Table
+	public class Book {
+	    @Id //Unique Id, but we will not auto generate
+	    private String isbn;
+
+	    private String title;
+
+	    @ManyToOne(cascade = CascadeType.ALL) //Many Books can belong to a single Author && Any changes made to author should reflect in Book
+	    @JoinColumn(name = "author_id") //There is no author column in Actual DB Table, we use this Annotation to define the column name
+	    private Author author;
+	}
+
+
+
+

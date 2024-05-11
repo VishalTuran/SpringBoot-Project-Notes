@@ -1,0 +1,33 @@
+DAO is used a intermediate b/w Service and Persistance Layer. It bring modularity which makes our code easy to maintain.
+
+Example of Dao Interface:
+ 
+	public interface AuthorDao {
+	    void create(Author author);
+	}
+
+Example of Dao Impl:
+	public class AuthorDaoImpl implements AuthorDao {
+	    private final JdbcTemplate jdbcTemplate;
+
+	    public AuthorDaoImpl(JdbcTemplate jdbcTemplate){
+	        this.jdbcTemplate=jdbcTemplate;
+	    }
+
+	    @Override
+	    public void create(Author author) {
+	        jdbcTemplate.update("INSERT INTO authors (id,name,age) VALUES (?,?,?)",author.getId(),author.getName(),author.getAge());
+	    }
+	}
+
+Author Class:
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Author {
+    private Long id;
+    private String name;
+    private Integer age;
+}	

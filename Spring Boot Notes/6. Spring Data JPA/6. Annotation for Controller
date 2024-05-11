@@ -1,0 +1,18 @@
+Important Annotation for Creating API:
+
+@PostMapping --> Used to Mark method as POST
+
+@GetMapping --> Used to Mark method as GET
+
+@PutMapping --> Used to Mark method as PUT
+
+@PatchMapping --> Used to Mark method as PATCH
+
+@DeleteMapping --> Used to Mark method as Delete
+
+@RequestBody --> Used to Get Request Body from API Call
+
+@PathVariable --> Used to Get Data from Path(URL)
+
+
+

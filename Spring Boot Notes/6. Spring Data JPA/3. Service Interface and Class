@@ -1,0 +1,195 @@
+We have successfully created Repo.
+
+Now it times for Service Layer.
+
+We will have Interface and then a Class Implementing the Interface.
+
+AuthorService Interface:
+
+	package com.vtapps.quickstart.services;
+
+	import com.vtapps.quickstart.Domain.entities.AuthorEntity;
+
+	import java.util.List;
+	import java.util.Optional;
+
+	public interface AuthorService {
+	    AuthorEntity save(AuthorEntity authorEntity);
+
+	    List<AuthorEntity> findAll();
+
+	    Optional<AuthorEntity> findById(Long id);
+
+	    boolean isExists(Long id);
+
+	    AuthorEntity partialUpdate(Long id, AuthorEntity authorEntity);
+
+	    void delete(Long id);
+	}
+
+This is all the method we required for doing CRUD On Author.
+
+Implementation Class:
+
+	package com.vtapps.quickstart.services.impl;
+
+	import com.vtapps.quickstart.Domain.entities.AuthorEntity;
+	import com.vtapps.quickstart.repositories.AuthorRepository;
+	import com.vtapps.quickstart.services.AuthorService;
+	import org.springframework.stereotype.Service;
+
+	import java.util.List;
+	import java.util.Optional;
+	import java.util.stream.Collectors;
+	import java.util.stream.StreamSupport;
+
+	@Service
+	public class AuthorServiceImpl implements AuthorService {
+	    AuthorRepository authorRepository;
+
+	    public AuthorServiceImpl(AuthorRepository authorRepository) {
+	        this.authorRepository = authorRepository;
+	    }
+
+	    @Override
+	    public AuthorEntity save(AuthorEntity authorEntity) {
+	        return authorRepository.save(authorEntity);
+	    }
+
+	    @Override
+	    public List<AuthorEntity> findAll() {
+	        return StreamSupport.stream(authorRepository.findAll().spliterator(),false).collect(Collectors.toList());
+	    }
+
+	    @Override
+	    public Optional<AuthorEntity> findById(Long id) {
+	        return authorRepository.findById(id);
+	    }
+
+	    @Override
+	    public boolean isExists(Long id) {
+	        return authorRepository.existsById(id);
+	    }
+
+	    @Override
+	    public AuthorEntity partialUpdate(Long id, AuthorEntity authorEntity) {
+	        authorEntity.setId(id);
+	        return authorRepository.findById(id).map(existingAuthor->{
+	            Optional.ofNullable(authorEntity.getAge()).ifPresent(existingAuthor::setAge);
+	            Optional.ofNullable(authorEntity.getName()).ifPresent(existingAuthor::setName);
+	            return authorRepository.save(existingAuthor);
+	        }).orElseThrow(()->new RuntimeException("Author Doesn't Exists"));
+
+	    }
+
+	    @Override
+	    public void delete(Long id) {
+	        authorRepository.deleteById(id);
+	    }
+	}
+
+We have to mark this Class as Service using @Service Annotation. This way Spring Boot will know that we are creating a Service and it will automatically inject it wherver it's required.
+
+We have an Object of AuthorRepository to work with Repo to execute Operation on Database.
+
+
+Similar thing will be done for Book Entity as well:
+
+BookService Interface:
+
+	package com.vtapps.quickstart.services;
+
+	import com.vtapps.quickstart.Domain.entities.BookEntity;
+	import org.springframework.data.domain.Page;
+	import org.springframework.data.domain.Pageable;
+
+	import java.util.List;
+	import java.util.Optional;
+
+	public interface BookService {
+	    BookEntity save(String isbn, BookEntity book);
+
+	    List<BookEntity> findAll();
+
+	    Page<BookEntity> findAll(Pageable pageable);
+
+	    Optional<BookEntity> findById(String isbn);
+
+	    boolean isExists(String isbn);
+
+	    BookEntity partialUpdate(String isbn, BookEntity bookEntity);
+
+	    void delete(String isbn);
+	}
+
+BookService Implementation:
+
+
+	package com.vtapps.quickstart.services.impl;
+
+	import com.vtapps.quickstart.Domain.entities.BookEntity;
+	import com.vtapps.quickstart.repositories.BookRepository;
+	import com.vtapps.quickstart.services.BookService;
+	import org.springframework.data.domain.Page;
+	import org.springframework.data.domain.Pageable;
+	import org.springframework.stereotype.Service;
+
+	import java.util.List;
+	import java.util.Optional;
+	import java.util.stream.Collectors;
+	import java.util.stream.StreamSupport;
+
+	@Service
+	public class BookServiceImpl implements BookService {
+	    private BookRepository bookRepository;
+
+	    public BookServiceImpl(BookRepository bookRepository){
+	        this.bookRepository=bookRepository;
+	    }
+
+	    @Override
+	    public BookEntity save(String isbn, BookEntity book) {
+	        book.setIsbn(isbn);
+	        return bookRepository.save(book);
+	    }
+
+	    @Override
+	    public List<BookEntity> findAll() {
+	        return StreamSupport.stream(bookRepository.findAll().spliterator(),false).collect(Collectors.toList());
+	    }
+
+	    @Override
+	    public Page<BookEntity> findAll(Pageable pageable) {
+	        return bookRepository.findAll(pageable);
+	    }
+
+
+	    @Override
+	    public Optional<BookEntity> findById(String isbn) {
+	        return bookRepository.findById(isbn);
+	    }
+
+	    @Override
+	    public boolean isExists(String isbn) {
+	        return bookRepository.existsById(isbn);
+	    }
+
+	    @Override
+	    public BookEntity partialUpdate(String isbn, BookEntity bookEntity) {
+	        bookEntity.setIsbn(isbn);
+	        return bookRepository.findById(isbn).map(existingBook->{
+	            Optional.ofNullable(existingBook.getTitle()).ifPresent(existingBook::setTitle);
+	            return bookRepository.save(existingBook);
+	        }).orElseThrow(()->new RuntimeException("Book Doesn't Exists"));
+	    }
+
+	    @Override
+	    public void delete(String isbn) {
+	        bookRepository.deleteById(isbn);
+	    }
+	}
+	
+
+
+
+

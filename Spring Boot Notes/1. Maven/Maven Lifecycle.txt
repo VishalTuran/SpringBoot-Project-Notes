@@ -1,0 +1,39 @@
+Maven is a Build Tool which helps programs in managing their project.
+
+It helps in handling dependency, build the code, testing the code and finally package the code.
+
+Maven is a command line tool. 
+
+Use can use "mvn" command if you have maven installed.
+
+Else we can use "mvnw", this represents a maven wrapper class which is present in project.
+
+Three Major work done by maven:
+
+1. clean - Removed temp files and directories
+
+2. default - Where the most useful goals live
+
+3. site - Where documentation is Generated
+
+
+Details about "clean" phase:
+
+"mvnw clean" cleans all the files in target directories which were all generated during Build
+
+Details about "default" phase:
+
+"mvnw compile" compiles code into bytecode
+
+"mvnw test" run unit test
+
+"mvnw package" creates a jar or war file
+
+"mvnw verify" run checks and integration test
+
+
+Running Application via Maven:
+
+Start: mvnw spring-boot:run
+
+

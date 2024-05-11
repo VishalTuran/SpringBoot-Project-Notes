@@ -1,0 +1,8 @@
+@SpringBootApplication annotation is used to specify that we are working with Spring Boot.
+
+Not just this, it does a lot of work under the hood.
+
+This Annotation does mainly work for 3 three other Spring Annotation
+1. @Configuration - This is used to Specify the Configuration where all the Beans are defined.
+2. @ComponentScan - This is used to Specify the starting point from which the Spring will start looking for Beans(Class annotated with @Component)
+3. @EnableAutoConfiguration

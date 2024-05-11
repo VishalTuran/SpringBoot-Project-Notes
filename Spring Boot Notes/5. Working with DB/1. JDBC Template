@@ -1,0 +1,13 @@
+JDBCTemplate Class can be used for making query to DB.
+
+Example of Creating JDBCTemplate Bean so that it's available in our Application Context
+
+
+	@Configuration
+	public class DatabaseConfig {
+	    @Bean
+	    public JdbcTemplate jdbcTemplate(DataSource dataSource){
+	        return new JdbcTemplate(dataSource);
+	    }
+	}
+

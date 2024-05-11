@@ -1,0 +1,107 @@
+Before we go on to Presentation Layer. 
+
+We need to Understand about DTO(Data Transfer Object).
+
+They are basically used to Keep our Presentation and Service Layer separate and decoupled. 
+
+DTO are the Object that we receive or send as request and response. 
+
+The Entity POJO we created should be kept just in code and not to be Exposed to Outer World.
+
+This is How our AuthorEntity Class Looks:
+
+	package com.vtapps.quickstart.Domain.entities;
+
+	import jakarta.persistence.*;
+	import lombok.*;
+
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	@Entity
+	@Table(name = "authors")
+	public class AuthorEntity {
+	    @Id
+	    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "author_id_seq")
+	    private Long id;
+	    private String name;
+	    private Integer age;
+	}
+
+This have Lombak Annotation to Generate Getter, Setters, Constructors and Spring Data JPA Annotation to mark this as Entity.
+
+This is How our AuthorDTO Looks likes:
+
+
+	package com.vtapps.quickstart.Domain.dto;
+
+	import lombok.AllArgsConstructor;
+	import lombok.Builder;
+	import lombok.Data;
+	import lombok.NoArgsConstructor;
+
+	@Data
+	@AllArgsConstructor
+	@NoArgsConstructor
+	@Builder
+	public class AuthorDto {
+	    private Long id;
+	    private String name;
+	    private Integer age;
+	}
+
+Notice, there is no Spring Data JPA Annotation, this is what we use for Data transfer.
+
+Same is done for Book Class:
+
+	package com.vtapps.quickstart.Domain.entities;
+
+	import jakarta.persistence.*;
+	import lombok.AllArgsConstructor;
+	import lombok.Builder;
+	import lombok.Data;
+	import lombok.NoArgsConstructor;
+
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	@Entity
+	@Table(name = "books")
+	public class BookEntity {
+	    @Id
+	    private String isbn;
+
+	    private String title;
+
+	    @ManyToOne(cascade = CascadeType.ALL)
+	    @JoinColumn(name = "author_id")
+	    private AuthorEntity author;
+	}
+
+
+	package com.vtapps.quickstart.Domain.dto;
+
+	import lombok.AllArgsConstructor;
+	import lombok.Builder;
+	import lombok.Data;
+	import lombok.NoArgsConstructor;
+
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	public class BookDto {
+	    private String isbn;
+
+	    private String title;
+
+	    private AuthorDto author;
+	}
+
+
+
+
+
+

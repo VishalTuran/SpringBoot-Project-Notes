@@ -1,0 +1,33 @@
+Initialising the DB Schema
+
+schema.sql
+
+	DROP TABLE IF EXISTS "widgets"
+
+	DROP SEQUENCE IF EXISTS widgets_id_seq;
+	CREATE SEQUENCE widgets_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223370236222222 CACHE 1;
+
+	CREATE TABLE 'widgets'(
+	    'id' bigint DEFAULT nextval(widgets_id_seq) NOT NULL,
+	    'name' txt,
+	    'purpose' txt,
+	    CONSTRAINT 'widgets_pkey' PRIMARY KEY("id")
+	    );
+
+
+data.sql
+
+INSERT INTO widgets (id,name,purpose) VALUES
+(1,'WIDGET A','USED FOR TESTING PURPOSE'),
+(2,'WIDGET B','USED FOR ENTERTAINMENT'),
+(3,'WIDGET C','USED FOR PRODUCTIVITY'),
+(4,'WIDGET D','USED FOR WORK'),
+(5,'WIDGET A','USED FOR LIKE'),
+
+
+Add config to run both this file on startup always:
+
+spring.sql.init.mode=always
+
+
+Now on Startup these two file will be executed
